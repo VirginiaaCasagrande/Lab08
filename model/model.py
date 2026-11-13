@@ -78,6 +78,31 @@ class Model:
 
     def __ricorsione(self, sequenza_parziale, giorno, ultimo_distributore, costo_corrente, prezzi_settimana):
         """ Implementa la ricorsione """
+        for distributore in self._distributori:
+
+        if giorno == 8:
+            if self.__costo_ottimo == -1 or costo_corrente < self.__costo_ottimo:
+                self.__costo_ottimo = costo_corrente
+                ...
+            pass
+
+
+        else:
+            for distributore in self._distributori:
+                id_distributore = distributore.id
+                prezzo = prezzi_settimana[id_distributore][giorno - 1]
+                costo = prezzo * 100  #il costo giornaliero deve sempre essere moltiplicato per 100
+                if ultimo_distributore is not None and id_distributore != ultimo_distributore:
+                    costo += 5
+
+                    sequenza_parziale.append(id_distributore)
+
+                self.__ricorsione(self, sequenza_parziale, giorno +1, id_distributore, costo_corrente + costo, prezzi_settimana)
+
+                sequenza_parziale.pop()
+
+
+
         # TODO
 
     def __get_prezzi_prima_settimana_mese(self, mese: int):
@@ -85,4 +110,22 @@ class Model:
         Restituisce i prezzi dei primi 7 giorni del mese selezionato per ciascun distributore.
         :return: un dizionario: {id_distributore: [prezzo_giorno1, ..., prezzo_giorno7]}
         """
-        # TODO
+
+        prezzi_settimana = {}
+
+        for distributore in self._distributori:
+            lista_prezzi = PrezzoDAO.get_prezzi(distributore.id)
+
+            if lista_prezzi is None:
+                continue
+
+            prezzi_cercati = []
+
+            for prezzo in lista_prezzi:
+                if prezzo.data.month == mese and prezzo.data.day <=7:
+                    prezzi_cercati.append(prezzo.prezzo_litro)
+
+            prezzi_settimana[distributore.id] = prezzi_cercati
+
+        return prezzi_settimana
+
