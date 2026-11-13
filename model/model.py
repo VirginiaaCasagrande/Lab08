@@ -36,6 +36,10 @@ class Model:
             #Recupero tutti i prezzi del distributore
             lista_prezzi = PrezzoDAO.get_prezzi(distributore.id)
 
+            #Dato che il DAO può restituire anche None, faccio una verifica
+            #Se viene restituito None, salto il distributore corrente (perchè non ha prezzi) e vado a quello seguente
+            if lista_prezzi is None:
+                continue
             #Creo una lista che contiene solo i prezzi del mese selezionato
             prezzi_mese_selezionato = []
 
