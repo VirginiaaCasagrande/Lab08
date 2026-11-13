@@ -78,32 +78,30 @@ class Model:
 
     def __ricorsione(self, sequenza_parziale, giorno, ultimo_distributore, costo_corrente, prezzi_settimana):
         """ Implementa la ricorsione """
-        for distributore in self._distributori:
 
         if giorno == 8:
             if self.__costo_ottimo == -1 or costo_corrente < self.__costo_ottimo:
-                self.__costo_ottimo = costo_corrente
-                ...
-            pass
-
+                self.__costo_ottimo = costo_corrente  #aggiorna il costo con il costo minimo trovato fino a questo momento
+                self.__sequenza_ottima = sequenza_parziale.copy()  #salva una copia della sequenza che ha prodotto questo costo minimo
+            return self.__sequenza_ottima
 
         else:
             for distributore in self._distributori:
                 id_distributore = distributore.id
                 prezzo = prezzi_settimana[id_distributore][giorno - 1]
                 costo = prezzo * 100  #il costo giornaliero deve sempre essere moltiplicato per 100
+
                 if ultimo_distributore is not None and id_distributore != ultimo_distributore:
                     costo += 5
 
-                    sequenza_parziale.append(id_distributore)
+                sequenza_parziale.append(id_distributore)
 
-                self.__ricorsione(self, sequenza_parziale, giorno +1, id_distributore, costo_corrente + costo, prezzi_settimana)
+                self.__ricorsione(sequenza_parziale, giorno +1, id_distributore, costo_corrente + costo, prezzi_settimana)
 
                 sequenza_parziale.pop()
 
 
 
-        # TODO
 
     def __get_prezzi_prima_settimana_mese(self, mese: int):
         """

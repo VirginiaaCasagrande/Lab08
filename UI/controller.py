@@ -43,3 +43,4 @@ class Controller:
             self._view.lista_visualizzazione.controls.append(ft.Text(f"La sequenza ottima ha costo {costo:.2f}€ ed è:"))
             for stop in sequenza_ottima:
                 self._view.lista_visualizzazione.controls.append(ft.Text(stop))
+
